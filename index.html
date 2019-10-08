@@ -29,6 +29,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="index.html">Peliculas</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" v-on:click.prevent="viewReservations">Ver Reservas</a>
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -62,9 +65,9 @@
                         <div class="card-body">
                             <h4 class="card-text text-center">{{ item.name }}</h4>
                             <p class="card-text points">{{ item.description }}</p>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"  v-on:click.prevent="viewMovie(item)" class="btn btn-primary btn-sm">Ver Mas</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="#"  v-on:click.prevent="createReservation(item)" class="btn btn-success btn-sm">Reservar</a>
+                            <a href="#"  v-on:click.prevent="validateReservation(item)" class="btn btn-success btn-sm">Reservar</a>
                         </div>
                     </div>
                 </div>
@@ -135,7 +138,7 @@
         <!-- fin modal view movie -->
 
         <!-- modal create reservation -->
-        <form method="POST" v-on:submit.prevent="createReservation">
+        <form method="POST" v-on:submit.prevent="createReservation(movies_id)">
             <div class="modal fade" id="createReservation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -148,7 +151,7 @@
                         <div class="modal-body">
                         <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" id="name" v-model="name" placeholder="Nombre" required><br>
+                                    <input type="text" class="form-control" id="name" v-model="nameReservation" placeholder="Nombre" required><br>
                                 </div>
                                 <div class="col-md-12">
                                     <input type="text" class="form-control" id="document" v-model="document" placeholder="Documento" required><br>
@@ -167,6 +170,40 @@
                 </div>
             </div>
         </form>
+        <!-- fin modal view reservation -->
+
+        <!-- modal create view reservation -->
+        <div class="modal fade" id="viewReservations" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog mw-100 w-75" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reservas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-hover">
+                            <tr>
+                                <th class="text-center">Pelicula</th>
+                                <th class="text-center">Nombre Reservante</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Cedula</th>
+                            </tr>
+                            <tr v-for="reservation in reservations">
+                                <td class="text-center">{{ reservation.movie }}</td>
+                                <td class="text-center">{{ reservation.name }}</td>
+                                <td class="text-center">{{ reservation.email }}</td>
+                                <td class="text-center">{{ reservation.document }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- fin modal view reservation -->
     </div>
     
