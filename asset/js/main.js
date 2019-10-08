@@ -7,6 +7,10 @@ new Vue({
         movies: [],
         date_start: "",
         date_end: "",
+        fillmovie: {'id': '', 'name': '', 'description': '', 'url_image':'', 'created_at': ''},
+        name: "",
+        url_image: "",
+        description: ""
     },
     methods: {
         getMovies: function() {
@@ -26,9 +30,37 @@ new Vue({
                 }
               }).then(response => {
                 this.movies = response.data
-                console.log(response.data)
             }).catch(e => {
                 console.log(e);
+            })
+        },
+        viewMovie: function(movie){
+            var urlViewMovie = "http://murmuring-hollows-00857.herokuapp.com/api/v1/movies/" + movie.id ;
+            axios.get(urlViewMovie).then(response => {
+               this.fillmovie.id = movie.id
+               this.fillmovie.name = movie.name
+               this.fillmovie.description = movie.description
+               this.fillmovie.url_image = movie.url_image
+               this.fillmovie.created_at = movie.created_at
+               $("#viewMovie").modal("show")
+            });
+        },
+        createMovie: function(){
+            console.log("entre")
+            var urlCreateMovie = "http://murmuring-hollows-00857.herokuapp.com/api/v1/movies"
+            axios.post(urlCreateMovie, {
+                name: this.name,
+                url_image: this.url_image,
+                description: this.description
+            }).then(response => {
+                this.getMovies()
+                this.name = ""
+                this.url_image = ""
+                this.description = ""
+                $("#createMovie").modal("hide")
+                toastr.success("Agregado Correctamente.")
+            }).catch(error => {
+                console.log(error);
             })
         }
     }
