@@ -10,7 +10,8 @@ new Vue({
         fillmovie: {'id': '', 'name': '', 'description': '', 'url_image':'', 'created_at': ''},
         name: "",
         url_image: "",
-        description: ""
+        description: "",
+        reservation_state: ""
     },
     methods: {
         getMovies: function() {
@@ -46,7 +47,6 @@ new Vue({
             });
         },
         createMovie: function(){
-            console.log("entre")
             var urlCreateMovie = "http://murmuring-hollows-00857.herokuapp.com/api/v1/movies"
             axios.post(urlCreateMovie, {
                 name: this.name,
@@ -62,6 +62,20 @@ new Vue({
             }).catch(error => {
                 console.log(error);
             })
+        },
+
+
+        ValidateReservation: function(id){
+            var urlValidate = 'http://murmuring-hollows-00857.herokuapp.com/api/v1/validate/' + id;
+            axios.get(urlValidate).then(response => {
+                this.reservation_state = response.data.state
+            });
+        },
+
+        createReservation: function(movie){
+            this.ValidateReservation(movie.id)
+            console.log(this.ValidateReservation(movie.id))
+            $("#createReservation").modal("show")
         }
     }
 });
